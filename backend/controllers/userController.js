@@ -7,10 +7,17 @@ const createUser = async (req, res) => {
         res.status(201).json(user);
 
     } catch (error) {
-        res.status(400).json({
-            message: error.message
+
+    if (error.code === 11000) {
+        return res.status(409).json({
+            message: 'Email already exists'
         });
     }
+
+    res.status(400).json({
+        message: error.message
+    });
+}
 };
 
 const getUser = async (req, res) => {

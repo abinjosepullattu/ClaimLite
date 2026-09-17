@@ -8,9 +8,10 @@ dotenv.config();
 
 const app = express();
 const userRoutes = require('./routes/userRoutes');
+const claimRoutes=require('./routes/claimRoutes')
 
 app.use(express.json());
-
+const errorHandler = require('./middleware/errorHandler');
 app.use(cors({
     origin: process.env.CORS_ORIGIN
 }));
@@ -25,7 +26,9 @@ app.get('/api/hello', (req, res) => {
 });
 
 app.use('/api/users', userRoutes);
+app.use('/api/claims',claimRoutes)
 
+app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
