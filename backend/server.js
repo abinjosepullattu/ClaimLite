@@ -7,6 +7,8 @@ const cors = require('cors');
 dotenv.config();
 
 const app = express();
+const userRoutes = require('./routes/userRoutes');
+
 app.use(express.json());
 
 app.use(cors({
@@ -21,6 +23,9 @@ app.get('/api/hello', (req, res) => {
         message: 'ClaimLite API is running'
     });
 });
+
+app.use('/api/users', userRoutes);
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
