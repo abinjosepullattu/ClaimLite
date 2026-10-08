@@ -1,0 +1,86 @@
+<div class="list-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Policyholders</h2>
+      <p>View all registered policyholders in ClaimLite.</p>
+    </div>
+
+    <duet-button
+      variation="primary"
+      routerLink="/add-user"
+    >
+      Add Policyholder
+    </duet-button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (users.length === 0 && !errorMessage) {
+
+    <div class="empty-state">
+      <h3>No policyholders yet</h3>
+      <p>No users registered yet. Please add a policyholder.</p>
+
+      <duet-button
+        variation="primary"
+        routerLink="/add-user"
+      >
+        Add First Policyholder
+      </duet-button>
+    </div>
+
+  } @else if (users.length > 0) {
+
+    <div class="table-card">
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Registration Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (user of users; track user._id) {
+              <tr>
+                <td class="user-id">
+                  {{ user._id.slice(-4) }}
+                </td>
+
+                <td class="user-name">
+                  {{ user.fullName }}
+                </td>
+
+                <td>
+                  {{ user.email }}
+                </td>
+
+                <td>
+                  ({{ user.phone | slice:0:3 }})
+                  {{ user.phone | slice:3:6 }}-{{ user.phone | slice:6:10 }}
+                </td>
+
+                <td>
+                  {{ user.createdAt | date:'dd-MMM-yyyy' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  }
+
+</div>

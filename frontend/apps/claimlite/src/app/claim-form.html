@@ -1,0 +1,153 @@
+<div class="form-page">
+
+  <div class="form-header">
+    <h2>Log Claim</h2>
+
+    <p>
+      Record a new insurance claim for a policyholder.
+    </p>
+  </div>
+
+  @if (!isLoadingUsers && users.length === 0) {
+    <div class="warning-message">
+      Action Required: You must register at least one Policyholder before
+      logging a claim.
+    </div>
+  }
+
+  @if (successMessage) {
+    <div class="success-message">
+      {{ successMessage }}
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <duet-card>
+
+    <form [formGroup]="claimForm" novalidate>
+
+      <duet-select
+        label="Policyholder"
+        placeholder="Select Policyholder"
+        [items]="policyholderOptions"
+        [value]="claimForm.controls.userId.value"
+        [disabled]="users.length === 0 || isLoadingUsers"
+        required
+        expand
+        [error]="
+          claimForm.controls.userId.touched &&
+          claimForm.controls.userId.invalid
+            ? 'Please select a policyholder.'
+            : ''
+        "
+        (duetChange)="onFieldInput('userId', $event)"
+      ></duet-select>
+
+
+      <duet-choice-group
+        label="Claim Type"
+        name="claimType"
+        direction="horizontal"
+        responsive
+        [value]="claimForm.controls.claimType.value"
+        required
+        [error]="
+          claimForm.controls.claimType.touched &&
+          claimForm.controls.claimType.invalid
+            ? 'Please select a claim type.'
+            : ''
+        "
+        (duetChange)="onFieldInput('claimType', $event)"
+      >
+
+        <duet-choice
+          label="Auto"
+          type="radio"
+          value="Auto"
+          expand
+        ></duet-choice>
+
+        <duet-choice
+          label="Home"
+          type="radio"
+          value="Home"
+          expand
+        ></duet-choice>
+
+        <duet-choice
+          label="Health"
+          type="radio"
+          value="Health"
+          expand
+        ></duet-choice>
+
+      </duet-choice-group>
+
+
+      <duet-input
+        label="Claim Amount"
+        type="text"
+        inputmode="decimal"
+        placeholder="Enter claim amount"
+        [value]="claimForm.controls.amount.value"
+        required
+        [error]="
+          claimForm.controls.amount.touched &&
+          claimForm.controls.amount.invalid
+            ? 'Enter an amount greater than 0, up to $1,000,000, with a maximum of 2 decimal places.'
+            : ''
+        "
+        (duetInput)="onFieldInput('amount', $event)"
+      ></duet-input>
+
+
+      <duet-textarea
+        label="Description"
+        placeholder="Describe the claim"
+        [value]="claimForm.controls.description.value"
+        minlength="10"
+        maxlength="500"
+        rows="5"
+        counter
+        required
+        [error]="
+          claimForm.controls.description.touched &&
+          claimForm.controls.description.invalid
+            ? 'Description must contain between 10 and 500 characters.'
+            : ''
+        "
+        (duetInput)="onFieldInput('description', $event)"
+      ></duet-textarea>
+
+
+      <div class="form-actions">
+
+        <duet-button
+          type="button"
+          variation="primary"
+          [disabled]="
+            isSubmitting ||
+            isLoadingUsers ||
+            users.length === 0
+          "
+          (click)="onSubmit()"
+        >
+          @if (isSubmitting) {
+            Logging Claim...
+          } @else {
+            Submit Claim
+          }
+        </duet-button>
+
+      </div>
+
+    </form>
+
+  </duet-card>
+
+</div>
