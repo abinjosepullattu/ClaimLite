@@ -1,0 +1,87 @@
+<div class="list-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Claims</h2>
+      <p>View all insurance claims logged in ClaimLite.</p>
+    </div>
+
+    <duet-button
+      variation="primary"
+      routerLink="/add-claim"
+    >
+      Log Claim
+    </duet-button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (claims.length === 0 && !errorMessage) {
+
+    <div class="empty-state">
+      <h3>No claims yet</h3>
+      <p>No claims have been logged yet.</p>
+
+      <duet-button
+        variation="primary"
+        routerLink="/add-claim"
+      >
+        Log First Claim
+      </duet-button>
+    </div>
+
+  } @else if (claims.length > 0) {
+
+    <div class="table-card">
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Claim ID</th>
+              <th>Policyholder Name</th>
+              <th>Claim Type</th>
+              <th>Amount</th>
+              <th>Submission Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (claim of claims; track claim._id) {
+              <tr>
+                <td class="claim-id">
+                  {{ claim._id.slice(-4) }}
+                </td>
+
+                <td class="policyholder-name">
+                  {{ claim.userId.fullName }}
+                </td>
+
+                <td>
+                  <span class="claim-type">
+                    {{ claim.claimType }}
+                  </span>
+                </td>
+
+                <td class="amount">
+                  {{ claim.amount | currency:'USD' }}
+                </td>
+
+                <td>
+                  {{ claim.createdAt | date:'dd-MMM-yyyy HH:mm' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  }
+
+</div>

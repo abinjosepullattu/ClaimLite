@@ -1,0 +1,94 @@
+<div class="form-page">
+
+  <div class="form-header">
+    <h2>Add Policyholder</h2>
+
+    <p>
+      Register a new policyholder to ClaimLite.
+    </p>
+  </div>
+
+  @if (successMessage) {
+    <div class="success-message">
+      {{ successMessage }}
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <duet-card>
+
+    <form [formGroup]="userForm" novalidate>
+
+      <duet-input
+        label="Full Name"
+        placeholder="Enter full name"
+        [value]="userForm.controls.fullName.value"
+        required
+        minlength="2"
+        maxlength="50"
+        [error]="
+          userForm.controls.fullName.touched &&
+          userForm.controls.fullName.invalid
+            ? 'Enter a valid name between 2 and 50 characters.'
+            : ''
+        "
+        (duetInput)="onFieldInput('fullName', $event)"
+      ></duet-input>
+
+      <duet-input
+        label="Email"
+        type="email"
+        placeholder="Enter email address"
+        [value]="userForm.controls.email.value"
+        required
+        [error]="
+          userForm.controls.email.touched &&
+          userForm.controls.email.invalid
+            ? 'Enter a valid email address.'
+            : ''
+        "
+        (duetInput)="onFieldInput('email', $event)"
+      ></duet-input>
+
+      <duet-input
+        label="Phone"
+        type="tel"
+        inputmode="numeric"
+        placeholder="Enter 10-digit phone number"
+        [value]="userForm.controls.phone.value"
+        required
+        maxlength="10"
+        [error]="
+          userForm.controls.phone.touched &&
+          userForm.controls.phone.invalid
+            ? 'Phone number must contain exactly 10 digits.'
+            : ''
+        "
+        (duetInput)="onFieldInput('phone', $event)"
+      ></duet-input>
+
+      <div class="form-actions">
+        <duet-button
+          type="button"
+          variation="primary"
+          [disabled]="isSubmitting"
+          (click)="onSubmit()"
+        >
+          @if (isSubmitting) {
+            Registering...
+          } @else {
+            Register Policyholder
+          }
+        </duet-button>
+      </div>
+
+    </form>
+
+  </duet-card>
+
+</div>
